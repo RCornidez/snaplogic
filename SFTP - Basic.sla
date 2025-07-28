@@ -1,0 +1,32 @@
+{
+    "class_id": "com-snaplogic-snaps-binary-binarybasicauthaccount",
+    "class_version": 1,
+    "migration_metadata": {
+        "source_org": "Partners"
+    },
+    "property_map": {
+        "info": {
+            "label": {
+                "value": "SFTP - Basic"
+            },
+            "notes": {
+                "value": null
+            }
+        },
+        "settings": {
+            "password": {
+                "expression": false,
+                "fp": "5537582b5408b627cd4dd4ff1c4b0ed40ea189ffc33ccf49e196ff6901dea522",
+                "key": "account-cloud-managed-55aeb42a050186140d44b424-2015-07-21T21:05:51-432179",
+                "sym_iv": "NoHm91T43PXiIC/VLgBG+A==",
+                "sym_key": "eittwprjukLFC4a9g2Gzjr+4OH88+QLBpRVvYJ5+6W/sCfi0xIWj6oLp8QmETe3nH03zWhaVmxImFu/XmLOjmezDfY55ayixOJmDk5J/bzY9/VrsbzIwbQB8+Irx8RPk+W9ZnVdeSqsUB1zywB2Qn0fVoOr+hd9o6LsWQxmwKl5jTQ/N3bYnxrPG/JcmDPQoR9/c24aou0EQN6NGO5bzCLyQ8ctRk1bktBi2N2o+ZhGSf2thLNqYqjNJ5LGhT2nF4e1Cmlze86YwzFdehhegEwifKXW5E5klv3zJsPN2A8bvxZ2DxrI+agbEqtqx0uPUYoJrfmUNpF9N21/oNLjxNA==",
+                "value": "m3L0jR6/y+/xiJVfojO4nw=="
+            },
+            "username": {
+                "expression": false,
+                "value": "snaplogic"
+            }
+        },
+        "view_serial": 100
+    }
+}

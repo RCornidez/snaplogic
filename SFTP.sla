@@ -1,0 +1,32 @@
+{
+    "class_id": "com-snaplogic-snaps-binary-binarysshaccount",
+    "class_version": 1,
+    "migration_metadata": {
+        "source_org": "Partners"
+    },
+    "property_map": {
+        "info": {
+            "label": {
+                "value": "SFTP"
+            },
+            "notes": {
+                "value": null
+            }
+        },
+        "settings": {
+            "passPhrase": {
+                "expression": true,
+                "value": null
+            },
+            "privateKey": {
+                "expression": false,
+                "value": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACCJa6AQ0w9E9/pAA3ppfSa0p8syVOJDdiBEfsuNEswyuwAAAJB1rTJ8da0y\nfAAAAAtzc2gtZWQyNTUxOQAAACCJa6AQ0w9E9/pAA3ppfSa0p8syVOJDdiBEfsuNEswyuw\nAAAEBV2O9PtRgHlimQaiNma+xim4T7rEEefOYUGKgjZWLe4IlroBDTD0T3+kADeml9JrSn\nyzJU4kN2IER+y40SzDK7AAAACXNuYXBsb2dpYwECAwQ=\n-----END OPENSSH PRIVATE KEY-----"
+            },
+            "username": {
+                "expression": false,
+                "value": "snaplogic"
+            }
+        },
+        "view_serial": 100
+    }
+}
