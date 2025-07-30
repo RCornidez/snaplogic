@@ -67,9 +67,17 @@ jobs:
                          -H "Authorization: Basic $AUTH_TOKEN" \
                          -H "Content-Type: application/json")
 
+            cat response.json || true
+
+            # Bail out early on HTTP errors
             if [ "$STATUS" -ne 200 ]; then
-              echo "::error title=SnapLogic Linter::Validation failed for $FILE (HTTP $STATUS)"
-              cat response.json || true
+              echo "::error title=SnapLogic Linter::HTTP $STATUS while validating $FILE"
+              exit 1
+            fi
+
+            # Fail the build if any Critical messages are present
+            if grep -q '"message_level":[[:space:]]*"Critical"' response.json; then
+              echo "::error title=SnapLogic Linter::Critical issues found in $FILE"
               exit 1
             fi
 
