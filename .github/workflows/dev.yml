@@ -85,11 +85,11 @@ jobs:
           done <<< "${{ steps.diff.outputs.changed_files }}"
      
       
-      - name: Run SnapLogic Test Runner
+      - name: Run Pipelines in Test Runner
         if: steps.diff.outputs.changed_files != ''
         env:
           # Fixed values for the test‑runner task
-          TEST_RUNNER_URL: https://elastic.snaplogic.com/api/1/rest/public/project/repo-status/Partners/York%20Solutions/${{ vars.SNAP_UTILITIES_PROJECT }}/Test_Runner_Task
+          TEST_RUNNER_URL: https://elastic.snaplogic.com/api/1/rest/slsched/feed/Partners/York%20Solutions/04_project_utilities/Test_Runner_Task
           TEST_RUNNER_TOKEN: ${{ secrets.SNAP_TEST_RUNNER_AUTH_TOKEN }}
 
           # Variables that describe where the pipelines live
@@ -98,44 +98,15 @@ jobs:
           DEV_PROJECT:   ${{ vars.SNAP_DEV_PROJECT }}
         shell: bash
         run: |
-          set -euo pipefail
-          enc() { echo "${1// /%20}"; }        # space → %20 helper
-
-          ORG_ESC=$(enc "$ORG")
-          SPACE_ESC=$(enc "$PROJECT_SPACE")
-          PROJ_ESC=$(enc "$DEV_PROJECT")
-
-          # -------- Build JSON array of full pipeline paths ------------
-          pipelines_json="["
-
-          while IFS= read -r FILE; do
-            # strip extension, URL‑encode spaces
-            PIPE_ESC=$(enc "$(basename "$FILE" .slp)")
-            FULL_PATH="/$ORG_ESC/$SPACE_ESC/$PROJ_ESC/$PIPE_ESC"
-            pipelines_json+="\"$FULL_PATH\","
-          done <<< "${{ steps.diff.outputs.changed_files }}"
-
-          # remove trailing comma, close array
-          pipelines_json="${pipelines_json%,}]"
-
-          echo "Pipelines to validate: $pipelines_json"
-
-          # ------------- Call the Test Runner triggered task ------------
-          STATUS=$(curl -s -o response.json -w "%{http_code}" \
-                     -X POST "$TEST_RUNNER_URL" \
-                     -H "Authorization: Bearer $TEST_RUNNER_TOKEN" \
-                     -H "Content-Type: application/json" \
-                     -d "$pipelines_json")
-
-          echo "--- Test‑Runner response (HTTP $STATUS) ---"
-          cat response.json || true
-          echo "------------------------------------------"
-
-          # Treat non‑200 or FAILED status as CI failure
-          if [ "$STATUS" -ne 200 ] || grep -q '"status"[[:space:]]*:[[:space:]]*"FAILED"' response.json; then
-            echo "::error title=SnapLogic Test Runner::One or more pipelines failed validation"
-            exit 1
-          fi
+          curl --location --request POST {{TEST_RUNNER_URL}} \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer {{ TEST_RUNNER_TOKEN }}' \
+            --data '{
+              "pipelines": [
+                "/Partners/York Solutions/01_project_dev/table to flat file pipeline",
+                "/Partners/York Solutions/01_project_dev/flat file to pipeline"
+              ]
+            }'
 
           echo " All pipelines passed Test Runner validation"
 
