@@ -98,7 +98,7 @@ jobs:
           DEV_PROJECT:   ${{ vars.SNAP_DEV_PROJECT }}
         shell: bash
         run: |
-          curl --location --request POST {{TEST_RUNNER_URL}} \
+          curl -s -o response1.json --location --request POST {{TEST_RUNNER_URL}} \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer {{ TEST_RUNNER_TOKEN }}' \
             --data '{
@@ -107,6 +107,8 @@ jobs:
                 "/Partners/York Solutions/01_project_dev/flat file to pipeline"
               ]
             }'
+            
+          cat response1.json || true
 
           echo " All pipelines passed Test Runner validation"
 
