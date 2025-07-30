@@ -67,7 +67,7 @@ jobs:
                          -H "Authorization: Basic $AUTH_TOKEN" \
                          -H "Content-Type: application/json")
 
-            cat response.json || true
+            # cat response.json || true
 
             # Bail out early on HTTP errors
             if [ "$STATUS" -ne 200 ]; then
@@ -85,14 +85,11 @@ jobs:
           done <<< "${{ steps.diff.outputs.changed_files }}"
      
       
-      - name: Run Pipelines in Test Runner
+      - name: Unit Test Pipelines
         if: steps.diff.outputs.changed_files != ''
         env:
-          # Fixed values for the test‑runner task
           TEST_RUNNER_URL: https://elastic.snaplogic.com/api/1/rest/slsched/feed/Partners/York%20Solutions/04_project_utilities/Test_Runner_Task
           TEST_RUNNER_TOKEN: ${{ secrets.SNAP_TEST_RUNNER_AUTH_TOKEN }}
-
-          # Variables that describe where the pipelines live
           ORG: Partners
           PROJECT_SPACE: ${{ vars.SNAP_PROJECT_SPACE }}
           DEV_PROJECT:   ${{ vars.SNAP_DEV_PROJECT }}
