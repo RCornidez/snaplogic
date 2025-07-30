@@ -2,43 +2,57 @@ name: validate dev branch and promote
 
 on:
   push:
-    branches: [ "dev" ]
-    # paths:
-    #   - "**/*.slp" # only fire when a .slp file is in the diff
-  workflow_dispatch:
+    branches: [ "dev" ]     
+  workflow_dispatch:             
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Get changed .slp files
-        id: changed
-        uses: tj-actions/changed-files@v44
         with:
-          files: "**/*.slp"
+          # fetch just enough history for a two‑dot diff
+          fetch-depth: 2
+
+      - name: Get changed .slp files (git diff)
+        id: diff
+        shell: bash
+        run: |
+          # If it's the very first commit on the branch, before may be all zeros.
+          BEFORE="${{ github.event.before }}"
+          if [[ "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
+            # Fall back to the parent of HEAD so diff still works.
+            BEFORE=$(git rev-parse HEAD^)
+          fi
+
+          # List added/modified/renamed *.slp files between BEFORE…HEAD
+          CHANGED=$(git diff --name-only "$BEFORE" ${{ github.sha }} -- '*.slp')
+
+          # Expose as a multiline output
+          {
+            echo 'changed_files<<EOF'
+            echo "$CHANGED"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
 
       - name: Validate pipelines
-        if: steps.changed.outputs.any_changed == 'true'
+        if: steps.diff.outputs.changed_files != ''
+        shell: bash
         run: |
+          files="${{ steps.diff.outputs.changed_files }}"
+          count=$(echo "$files" | grep -c .)   # number of non‑empty lines
+
           echo "Changed .slp files:"
-          files="${{ steps.changed.outputs.all_changed_files }}"
-      
-          # How many paths did we get?
-          count=$(echo "$files" | wc -l)
-      
           if [ "$count" -gt 1 ]; then
-            # ➜ more than one file: loop over each
-            for file in $files; do
-              echo "• $file"
-              # ./scripts/validate "$file"
-            done
+            while IFS= read -r f; do
+              echo "• $f"
+              # ./scripts/validate "$f"
+            done <<< "$files"
           else
-            # ➜ exactly one file: just print/validate once
             echo "• $files"
             # ./scripts/validate "$files"
           fi
 
-      - name: Determine Asset Changes
-        run: echo "Test"
+      - name: No pipeline changes
+        if: steps.diff.outputs.changed_files == ''
+        run: echo "No .slp files changed – skipping validation."
