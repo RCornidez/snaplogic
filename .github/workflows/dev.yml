@@ -1,0 +1,32 @@
+name: validate dev branch and promote
+
+on:
+  push:
+    branches: [ "dev" ]
+    # paths:
+    #   - "**/*.slp" # only fire when a .slp file is in the diff
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get changed .slp files
+        id: changed
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.slp"
+
+      - name: Validate pipelines
+        if: steps.changed.outputs.any_changed == 'true'
+        run: |
+          echo "Changed .slp files:"
+          for file in ${{ steps.changed.outputs.all_changed_files }}; do
+            echo "• $file"
+            # ./scripts/validate "$file"
+          done
+
+      - name: Determine Asset Changes
+        run: echo "Test"
