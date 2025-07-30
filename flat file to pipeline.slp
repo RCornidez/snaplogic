@@ -16,6 +16,12 @@
             "dst_view_id": "input0",
             "src_id": "11111111-1111-1111-1111-000000000001",
             "src_view_id": "output0"
+        },
+        "link129": {
+            "dst_id": "11111111-1111-1111-1111-000000000001",
+            "dst_view_id": "input0",
+            "src_id": "11111111-1111-1111-1111-000000000000",
+            "src_view_id": "output0"
         }
     },
     "property_map": {
@@ -39,26 +45,8 @@
                 "value": null
             }
         },
-        "input": {
-            "11111111-1111-1111-1111-000000000001_input0": {
-                "label": {
-                    "value": "Filter out invalid SSN and DATE_OF_DEATH - input0"
-                },
-                "view_type": {
-                    "value": "document"
-                }
-            }
-        },
-        "output": {
-            "11111111-1111-1111-1111-000000000000_output0": {
-                "label": {
-                    "value": "JSON Generator - output0"
-                },
-                "view_type": {
-                    "value": "document"
-                }
-            }
-        },
+        "input": {},
+        "output": {},
         "settings": {
             "cache_pipelines": {
                 "value": []
@@ -86,14 +74,14 @@
         "detail_map": {
             "11111111-1111-1111-1111-000000000000": {
                 "error": {},
-                "grid_x_int": 1,
-                "grid_y_int": 2,
+                "grid_x_int": 2,
+                "grid_y_int": 1,
                 "index": null,
                 "input": {},
                 "output": {},
                 "recommendation_id": null,
-                "rot_int": 90,
-                "rot_tail_int": 90,
+                "rot_int": 0,
+                "rot_tail_int": 270,
                 "source": "snap catagory"
             },
             "11111111-1111-1111-1111-000000000001": {
