@@ -23,8 +23,9 @@ jobs:
         if: steps.changed.outputs.any_changed == 'true'
         run: |
           echo "Changed .slp files:"
-          for file in ${{ steps.changed.outputs.all_changed_files }}; do
-            echo "• $file"
+          echo "${{ steps.changed.outputs.all_changed_files }}"
+          # for file in ${{ steps.changed.outputs.all_changed_files }}; do
+          #   echo "• $file"
             # ./scripts/validate "$file"
           done
 
