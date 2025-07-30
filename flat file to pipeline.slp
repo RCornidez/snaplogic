@@ -16,12 +16,6 @@
             "dst_view_id": "input0",
             "src_id": "11111111-1111-1111-1111-000000000001",
             "src_view_id": "output0"
-        },
-        "link123": {
-            "dst_id": "11111111-1111-1111-1111-000000000004",
-            "dst_view_id": "input0",
-            "src_id": "11111111-1111-1111-1111-000000000003",
-            "src_view_id": "output0"
         }
     },
     "property_map": {
@@ -45,8 +39,26 @@
                 "value": null
             }
         },
-        "input": {},
-        "output": {},
+        "input": {
+            "11111111-1111-1111-1111-000000000005_input0": {
+                "label": {
+                    "value": "Assert Equals - input0"
+                },
+                "view_type": {
+                    "value": "document"
+                }
+            }
+        },
+        "output": {
+            "11111111-1111-1111-1111-000000000003_output0": {
+                "label": {
+                    "value": "Filter out invalid SSN and DATE_OF_DEATH - output0"
+                },
+                "view_type": {
+                    "value": "document"
+                }
+            }
+        },
         "settings": {
             "cache_pipelines": {
                 "value": []
@@ -123,24 +135,24 @@
             "11111111-1111-1111-1111-000000000004": {
                 "error": {},
                 "grid_x_int": 5,
-                "grid_y_int": 1,
-                "index": null,
-                "input": {},
-                "output": {},
-                "recommendation_id": null,
-                "rot_int": 0,
-                "rot_tail_int": 0,
-                "source": "snap catagory"
-            },
-            "11111111-1111-1111-1111-000000000005": {
-                "error": {},
-                "grid_x_int": 5,
                 "grid_y_int": 2,
                 "index": null,
                 "input": {},
                 "output": {},
                 "recommendation_id": null,
                 "rot_int": 270,
+                "rot_tail_int": 0,
+                "source": "snap catagory"
+            },
+            "11111111-1111-1111-1111-000000000005": {
+                "error": {},
+                "grid_x_int": 6,
+                "grid_y_int": 1,
+                "index": null,
+                "input": {},
+                "output": {},
+                "recommendation_id": null,
+                "rot_int": 0,
                 "rot_tail_int": 0,
                 "source": "snap catagory"
             }
@@ -479,58 +491,9 @@
             }
         },
         "11111111-1111-1111-1111-000000000004": {
-            "class_id": "com-snaplogic-snaps-test-assertequals",
-            "class_version": 1,
-            "instance_id": "11111111-1111-1111-1111-000000000004",
-            "property_map": {
-                "error": {
-                    "error0": {
-                        "label": {
-                            "value": "error0"
-                        },
-                        "view_type": {
-                            "value": "document"
-                        }
-                    },
-                    "error_behavior": {
-                        "value": "fail"
-                    }
-                },
-                "info": {
-                    "label": {
-                        "value": "Assert Equals"
-                    },
-                    "notes": {}
-                },
-                "input": {
-                    "input0": {
-                        "label": {
-                            "value": "input0"
-                        },
-                        "view_type": {
-                            "value": "document"
-                        }
-                    }
-                },
-                "output": {},
-                "settings": {
-                    "editable_content": {
-                        "value": "## Enter your expected JSON-encoded data in this space.\n## \"[]\" is required, i.e. should be a List of objects.\n\n[\n  {\n    \"FIRST_NAME\": \"Mia\",\n    \"MIDDLE_NAME\": \"\",\n    \"LAST_NAME\": \"Diaz\",\n    \"DATE_OF_BIRTH\": \"1952-06-20 00:00:00.000\",\n    \"DATE_OF_DEATH\": \"2020-03-15 00:00:00.000\",\n    \"SSN\": \"147-60-5530\",\n    \"GENDER\": \"Female\"\n  }\n]\n\n## Tips:\n##  * The sample data above will generate a single empty document, uncomment\n##    the line in the middle to include the sample fields.  Adding more\n##    objects to the root array will cause the snap to generate more\n##    than one document.\n"
-                    },
-                    "evaluateWithInputDocument": {
-                        "value": true
-                    },
-                    "execution_mode": {
-                        "value": "Validate & Execute"
-                    }
-                },
-                "view_serial": 100
-            }
-        },
-        "11111111-1111-1111-1111-000000000005": {
             "class_id": "com-snaplogic-snaps-oracle-update",
             "class_version": 1,
-            "instance_id": "11111111-1111-1111-1111-000000000005",
+            "instance_id": "11111111-1111-1111-1111-000000000004",
             "property_map": {
                 "account": {
                     "account_ref": {
@@ -609,6 +572,55 @@
                     "updateCondition": {
                         "expression": true,
                         "value": "\"SSN=$SSN\""
+                    }
+                },
+                "view_serial": 100
+            }
+        },
+        "11111111-1111-1111-1111-000000000005": {
+            "class_id": "com-snaplogic-snaps-test-assertequals",
+            "class_version": 1,
+            "instance_id": "11111111-1111-1111-1111-000000000005",
+            "property_map": {
+                "error": {
+                    "error0": {
+                        "label": {
+                            "value": "error0"
+                        },
+                        "view_type": {
+                            "value": "document"
+                        }
+                    },
+                    "error_behavior": {
+                        "value": "fail"
+                    }
+                },
+                "info": {
+                    "label": {
+                        "value": "Assert Equals"
+                    },
+                    "notes": {}
+                },
+                "input": {
+                    "input0": {
+                        "label": {
+                            "value": "input0"
+                        },
+                        "view_type": {
+                            "value": "document"
+                        }
+                    }
+                },
+                "output": {},
+                "settings": {
+                    "editable_content": {
+                        "value": "## Enter your expected JSON-encoded data in this space.\n## \"[]\" is required, i.e. should be a List of objects.\n\n[\n  {\n    \"FIRST_NAME\": \"Mia\",\n    \"MIDDLE_NAME\": \"\",\n    \"LAST_NAME\": \"Diaz\",\n    \"DATE_OF_BIRTH\": \"1952-06-20 00:00:00.000\",\n    \"DATE_OF_DEATH\": \"2020-03-15 00:00:00.000\",\n    \"SSN\": \"147-60-5530\",\n    \"GENDER\": \"Female\"\n  }\n]\n\n## Tips:\n##  * The sample data above will generate a single empty document, uncomment\n##    the line in the middle to include the sample fields.  Adding more\n##    objects to the root array will cause the snap to generate more\n##    than one document.\n"
+                    },
+                    "evaluateWithInputDocument": {
+                        "value": true
+                    },
+                    "execution_mode": {
+                        "value": "Validate & Execute"
                     }
                 },
                 "view_serial": 100
