@@ -23,11 +23,22 @@ jobs:
         if: steps.changed.outputs.any_changed == 'true'
         run: |
           echo "Changed .slp files:"
-          echo "${{ steps.changed.outputs.all_changed_files }}"
-          # for file in ${{ steps.changed.outputs.all_changed_files }}; do
-          #   echo "• $file"
-          #   ./scripts/validate "$file"
-          # done
+          files="${{ steps.changed.outputs.all_changed_files }}"
+      
+          # How many paths did we get?
+          count=$(echo "$files" | wc -l)
+      
+          if [ "$count" -gt 1 ]; then
+            # ➜ more than one file: loop over each
+            for file in $files; do
+              echo "• $file"
+              # ./scripts/validate "$file"
+            done
+          else
+            # ➜ exactly one file: just print/validate once
+            echo "• $files"
+            # ./scripts/validate "$files"
+          fi
 
       - name: Determine Asset Changes
         run: echo "Test"
