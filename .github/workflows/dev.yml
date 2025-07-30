@@ -35,23 +35,43 @@ jobs:
             echo EOF
           } >> "$GITHUB_OUTPUT"
 
-      - name: Validate pipelines
+      - name: Validate pipelines with SnapLogic linter
         if: steps.diff.outputs.changed_files != ''
+        env:
+          BASE_URL:      ${{ vars.SNAP_API_BASE_URL }}
+          AUTH_TOKEN:    ${{ secrets.SNAP_AUTH_TOKEN }}
+          PROJECT_SPACE: ${{ vars.SNAP_PROJECT_SPACE }}
+          DEV_PROJECT:   ${{ vars.SNAP_DEV_PROJECT }}
         shell: bash
         run: |
-          files="${{ steps.diff.outputs.changed_files }}"
-          count=$(echo "$files" | grep -c .)   # number of non‑empty lines
+          set -euo pipefail
 
           echo "Changed .slp files:"
-          if [ "$count" -gt 1 ]; then
-            while IFS= read -r f; do
-              echo "• $f"
-              # ./scripts/validate "$f"
-            done <<< "$files"
-          else
-            echo "• $files"
-            # ./scripts/validate "$files"
-          fi
+          while IFS= read -r FILE; do
+            echo "• $FILE"
+
+            PIPE_NAME=$(basename "$FILE" .slp)
+            PIPE_SEGMENT=${PIPE_NAME// /%20}
+            SPACE_SEGMENT=${PROJECT_SPACE// /%20}
+            PROJ_SEGMENT=${DEV_PROJECT// /%20}
+
+            API_PATH="$SPACE_SEGMENT/$PROJ_SEGMENT/$PIPE_SEGMENT"
+            URL="${BASE_URL%/}/api/1/rest/public/pipeline/linter/$API_PATH"
+
+            echo "Validating with: $URL"
+            STATUS=$(curl -s -o response.json -w "%{http_code}" \
+                         -X POST "$URL" \
+                         -H "Authorization: Basic $AUTH_TOKEN" \
+                         -H "Content-Type: application/json")
+
+            if [ "$STATUS" -ne 200 ]; then
+              echo "::error title=SnapLogic Linter::Validation failed for $FILE (HTTP $STATUS)"
+              cat response.json || true
+              exit 1
+            fi
+
+            echo "$FILE validated successfully"
+          done <<< "${{ steps.diff.outputs.changed_files }}"
 
       - name: No pipeline changes
         if: steps.diff.outputs.changed_files == ''
