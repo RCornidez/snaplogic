@@ -15,6 +15,10 @@ deleted_count=$(printf "%s" "$diff_output" | awk '$1=="D"{c++} END{print c+0}')
 pr_title="Promote dev into test (${commit_sha})"
 pr_body="Automated promotion from \`dev\` into \`test\`.\n**Source commit:** \`${commit_sha}\`\n**Change summary (vs test):**\n- Files added: ${added_count}\n- Files modified: ${modified_count}\n- Files deleted: ${deleted_count}\n"
 
+if ! gh label list | grep -qx auto-promote; then
+    gh label create auto-promote --description "Labels auto-generated promotion PRs"
+fi
+
 # create the PR
 gh pr create \
 --base test \
