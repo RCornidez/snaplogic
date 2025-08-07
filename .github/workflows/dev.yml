@@ -1,4 +1,4 @@
-name: Stage one - evaluate and promote
+name: Promote dev to test
 on:
   push:
     branches: [ "dev" ]     
@@ -15,18 +15,62 @@ jobs:
 
       - name: Determine repository changes
         run: bash scripts/detect_changes.sh
-  
-  promote_to_test:
+
+  test_pipelines:
     needs: [evaluate]
-    # if: |
-    #   (
-    #     needs.evaluate.outputs.pipeline_changed == 'false' &&
-    #     needs.evaluate.outputs.assets_changed == 'true'
-    #   ) ||
-    #   (
-    #     needs.evaluate.outputs.pipeline_changed == 'true' &&
-    #     needs.test_pipelines.outputs.tests_succeeded == 'true'
-    #   )
+    if: needs.evaluate.outputs.pipeline_changed == 'true'
+    # env:
+    #   BASE_URL:      ${{ vars.SNAP_API_BASE_URL }}
+    #   AUTH_TOKEN:    ${{ secrets.SNAP_AUTH_TOKEN }}
+    #   PIPELINE_RUNNER_URL: https://elastic.snaplogic.com/api/1/rest/slsched/feed/Partners/York%20Solutions/04_project_utilities/Test_Runner_Task
+    #   PIPELINE_RUNNER_TOKEN: ${{ secrets.SNAP_TEST_RUNNER_AUTH_TOKEN }}
+    #   UNIT_TEST_URL:       ${{ vars.SNAP_UNIT_TEST_URL }}
+    #   UNIT_TEST_TOKEN:     ${{ secrets.SNAP_UNIT_TEST_TOKEN }}
+
+    #   ORG:           ${{ vars.SNAP_ORG }}
+    #   PROJECT_SPACE: ${{ vars.SNAP_PROJECT_SPACE }}
+    #   DEV_PROJECT:   ${{ vars.SNAP_DEV_PROJECT }}
+    #   PIPELINE_FILES: ${{ needs.evaluate.outputs.pipeline_files }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Validate pipelines with SnapLogic linter
+        run: bash scripts/validate_pipelines.sh
+          
+      # - name: Extract targets from changed pipelines
+      #   run: bash scripts/extract_targets.sh
+
+      # - name: Run the changed pipelines in dev environment
+      #   shell: bash
+      #   run: |
+      #     curl --location --request POST {{ PIPELINE_RUNNER_URL }} \
+      #       --header 'Content-Type: application/json' \
+      #       --header 'Authorization: Bearer {{ PIPELINE_RUNNER_TOKEN }}' \
+      #       --data '{"pipelines":${{ PIPELINE_FILES }}}'
+
+      # - name: Unit test pipeline targets
+      #   shell: bash
+      #   run: |
+      #     curl --location --request POST {{UNIT_TEST_URL}} \
+      #       --header 'Content-Type: application/json' \
+      #       --header 'Authorization: Bearer {{ UNIT_TEST_TOKEN }}' \
+      #       --data '{"targets":${{ steps.extract_targets.outputs.targets_json }}}'
+
+  promote_to_test:
+    needs: [evaluate,test_pipelines]
+    if: |
+      (
+        needs.evaluate.outputs.pipeline_changed == 'false' &&
+        needs.evaluate.outputs.assets_changed == 'true'
+      ) ||
+      (
+        needs.evaluate.outputs.pipeline_changed == 'true' &&
+        needs.test_pipelines.outputs.tests_succeeded == 'true'
+      )
     runs-on: ubuntu-latest
     permissions:
         contents: write
@@ -38,13 +82,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 
-          
+          fetch-depth: 0
+
       - name: Fetch dev branch
         run: git fetch origin dev
 
       - name: Create a promotion branch
         run: bash scripts/promote_to_test.sh
-  
   
       
