@@ -14,7 +14,7 @@ jobs:
           fetch-depth: 2
 
       - name: Determine repository changes
-        run: bash ./scripts/detect_changes.sh
+        run: bash scripts/detect_changes.sh
   
   promote_to_test:
     needs: [evaluate]
@@ -46,7 +46,7 @@ jobs:
         run: git fetch origin dev
 
       - name: Create a promotion branch
-        run: bash ./scripts/promote_to_test.sh
+        run: bash scripts/promote_to_test.sh
   
   
       
