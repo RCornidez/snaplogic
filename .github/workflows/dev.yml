@@ -1,113 +1,52 @@
-name: validate dev branch and promote
-
+name: Stage one - evaluate and promote
 on:
   push:
     branches: [ "dev" ]     
-  workflow_dispatch:             
+  workflow_dispatch:     
 
 jobs:
-  build:
+  evaluate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          # fetch just enough history for a two‑dot diff
           fetch-depth: 2
 
-      - name: Get changed .slp files (git diff)
-        id: diff
-        shell: bash
-        run: |
-          # If it's the very first commit on the branch, before may be all zeros.
-          BEFORE="${{ github.event.before }}"
-          if [[ "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
-            # Fall back to the parent of HEAD so diff still works.
-            BEFORE=$(git rev-parse HEAD^)
-          fi
+      - name: Determine repository changes
+        run: bash scripts/detect_changes.sh
+  
+  promote_to_test:
+    needs: [evaluate]
+    # if: |
+    #   (
+    #     needs.evaluate.outputs.pipeline_changed == 'false' &&
+    #     needs.evaluate.outputs.assets_changed == 'true'
+    #   ) ||
+    #   (
+    #     needs.evaluate.outputs.pipeline_changed == 'true' &&
+    #     needs.test_pipelines.outputs.tests_succeeded == 'true'
+    #   )
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+        pull-requests: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
 
-          # List added/modified/renamed *.slp files between BEFORE…HEAD
-          CHANGED=$(git diff --name-only "$BEFORE" ${{ github.sha }} -- '*.slp')
-
-          # Expose as a multiline output
-          {
-            echo 'changed_files<<EOF'
-            echo "$CHANGED"
-            echo EOF
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Validate pipelines with SnapLogic linter
-        if: steps.diff.outputs.changed_files != ''
-        env:
-          BASE_URL:      ${{ vars.SNAP_API_BASE_URL }}
-          AUTH_TOKEN:    ${{ secrets.SNAP_AUTH_TOKEN }}
-          ORG:           ${{ vars.SNAP_ORG }} 
-          PROJECT_SPACE: ${{ vars.SNAP_PROJECT_SPACE }}
-          DEV_PROJECT:   ${{ vars.SNAP_DEV_PROJECT }}
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          echo "Changed .slp files:"
-          while IFS= read -r FILE; do
-            echo "• $FILE"
-
-            enc() { echo "${1// /%20}"; }
-
-            ORG_SEG=$(enc "$ORG")
-            SPACE_SEG=$(enc "$PROJECT_SPACE")
-            PROJ_SEG=$(enc "$DEV_PROJECT")
-            PIPE_SEG=$(enc "$(basename "$FILE" .slp)")
-
-            API_PATH="$ORG_SEG/$SPACE_SEG/$PROJ_SEG/$PIPE_SEG"
-            URL="${BASE_URL%/}/api/1/rest/public/pipeline/linter/$API_PATH"
-
-            echo "Validating with: $URL"
-            STATUS=$(curl -s -o response.json -w "%{http_code}" \
-                         -X POST "$URL" \
-                         -H "Authorization: Basic $AUTH_TOKEN" \
-                         -H "Content-Type: application/json")
-
-            # cat response.json || true
-
-            # Bail out early on HTTP errors
-            if [ "$STATUS" -ne 200 ]; then
-              echo "::error title=SnapLogic Linter::HTTP $STATUS while validating $FILE"
-              exit 1
-            fi
-
-            # Fail the build if any Critical messages are present
-            if grep -q '"message_level":[[:space:]]*"Critical"' response.json; then
-              echo "::error title=SnapLogic Linter::Critical issues found in $FILE"
-              exit 1
-            fi
-
-            echo "$FILE validated successfully"
-          done <<< "${{ steps.diff.outputs.changed_files }}"
-     
-      
-      - name: Unit Test Pipelines
-        if: steps.diff.outputs.changed_files != ''
-        env:
-          TEST_RUNNER_URL: https://elastic.snaplogic.com/api/1/rest/slsched/feed/Partners/York%20Solutions/04_project_utilities/Test_Runner_Task
-          TEST_RUNNER_TOKEN: ${{ secrets.SNAP_TEST_RUNNER_AUTH_TOKEN }}
-          ORG: Partners
-          PROJECT_SPACE: ${{ vars.SNAP_PROJECT_SPACE }}
-          DEV_PROJECT:   ${{ vars.SNAP_DEV_PROJECT }}
-        shell: bash
-        run: |
-          curl --location --request POST {{TEST_RUNNER_URL}} \
-            --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer {{ TEST_RUNNER_TOKEN }}' \
-            --data '{
-              "pipelines": [
-                "/Partners/York Solutions/01_project_dev/table to flat file pipeline",
-                "/Partners/York Solutions/01_project_dev/flat file to pipeline"
-              ]
-            }'
-
-          echo " All pipelines passed Test Runner validation"
-
+      - name: Configure GitHub CLI authentication
+        run: gh auth login --with-token
           
-      - name: No pipeline changes
-        if: steps.diff.outputs.changed_files == ''
-        run: echo "No .slp files changed – skipping validation." 
+      - name: Fetch dev branch
+        run: git fetch origin dev
+
+      - name: Create a promotion branch
+        run: bash scripts/promote_to_test.sh
+  
+  
+      
