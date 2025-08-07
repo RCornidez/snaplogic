@@ -9,7 +9,7 @@ TAG=${TAG#refs/tags/}        # strip prefix
 # 2. Calculate commit & branch names
 SHA=$(git rev-parse "$TAG")
 BRANCH="promote-${TAG}"
-BASE_BRANCH="production"
+BASE_BRANCH="prod"
 
 # 3. Bail out early if there’s nothing new to promote
 if git merge-base --is-ancestor "$SHA" "origin/$BASE_BRANCH"; then
