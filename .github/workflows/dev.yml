@@ -38,9 +38,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 
-
-      - name: Configure GitHub CLI authentication
-        run: gh auth login --with-token
           
       - name: Fetch dev branch
         run: git fetch origin dev
