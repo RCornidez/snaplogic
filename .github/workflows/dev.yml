@@ -1,0 +1,50 @@
+name: Stage one - evaluate and promote
+on:
+  push:
+    branches: [ "dev" ]     
+  workflow_dispatch:     
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Determine repository changes
+        run: bash scripts/detect_changes.sh
+  
+  promote_to_test:
+    needs: [evaluate]
+    # if: |
+    #   (
+    #     needs.evaluate.outputs.pipeline_changed == 'false' &&
+    #     needs.evaluate.outputs.assets_changed == 'true'
+    #   ) ||
+    #   (
+    #     needs.evaluate.outputs.pipeline_changed == 'true' &&
+    #     needs.test_pipelines.outputs.tests_succeeded == 'true'
+    #   )
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+        pull-requests: write
+        issues: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+          
+      - name: Fetch dev branch
+        run: git fetch origin dev
+
+      - name: Create a promotion branch
+        run: bash scripts/promote_to_test.sh
+  
+  
+      

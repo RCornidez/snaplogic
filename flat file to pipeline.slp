@@ -6,21 +6,21 @@
     "class_version": 9,
     "link_map": {
         "link100": {
-            "dst_id": "11111111-1111-1111-1111-000000000002",
-            "dst_view_id": "input0",
-            "src_id": "11111111-1111-1111-1111-000000000000",
-            "src_view_id": "output0"
-        },
-        "link110": {
-            "dst_id": "11111111-1111-1111-1111-000000000003",
-            "dst_view_id": "input0",
-            "src_id": "11111111-1111-1111-1111-000000000002",
-            "src_view_id": "output0"
-        },
-        "link111": {
             "dst_id": "11111111-1111-1111-1111-000000000004",
             "dst_view_id": "input0",
             "src_id": "11111111-1111-1111-1111-000000000003",
+            "src_view_id": "output0"
+        },
+        "link126": {
+            "dst_id": "11111111-1111-1111-1111-000000000002",
+            "dst_view_id": "input0",
+            "src_id": "11111111-1111-1111-1111-000000000001",
+            "src_view_id": "output0"
+        },
+        "link129": {
+            "dst_id": "11111111-1111-1111-1111-000000000001",
+            "dst_view_id": "input0",
+            "src_id": "11111111-1111-1111-1111-000000000000",
             "src_view_id": "output0"
         }
     },
@@ -75,19 +75,19 @@
             "11111111-1111-1111-1111-000000000000": {
                 "error": {},
                 "grid_x_int": 2,
-                "grid_y_int": 2,
+                "grid_y_int": 1,
                 "index": null,
                 "input": {},
                 "output": {},
                 "recommendation_id": null,
                 "rot_int": 0,
-                "rot_tail_int": 0,
+                "rot_tail_int": 270,
                 "source": "snap catagory"
             },
             "11111111-1111-1111-1111-000000000001": {
                 "error": {},
-                "grid_x_int": 2,
-                "grid_y_int": 3,
+                "grid_x_int": 3,
+                "grid_y_int": 1,
                 "index": null,
                 "input": {},
                 "output": {},
@@ -98,15 +98,15 @@
             },
             "11111111-1111-1111-1111-000000000002": {
                 "error": {},
-                "grid_x_int": 3,
-                "grid_y_int": 2,
-                "index": 0,
+                "grid_x_int": 4,
+                "grid_y_int": 1,
+                "index": null,
                 "input": {},
                 "output": {},
-                "recommendation_id": "faef6caf-9ff4-2aa3-6213-b5bf742bf0bd_0",
+                "recommendation_id": null,
                 "rot_int": 0,
                 "rot_tail_int": 0,
-                "source": "iris placeholder"
+                "source": "snap catagory"
             },
             "11111111-1111-1111-1111-000000000003": {
                 "error": {},
@@ -124,23 +124,23 @@
                 "error": {},
                 "grid_x_int": 5,
                 "grid_y_int": 2,
-                "index": null,
+                "index": 0,
                 "input": {},
                 "output": {},
-                "recommendation_id": null,
+                "recommendation_id": "faef6caf-9ff4-2aa3-6213-b5bf742bf0bd_0",
                 "rot_int": 0,
                 "rot_tail_int": 0,
-                "source": "snap catagory"
+                "source": "iris placeholder"
             },
             "11111111-1111-1111-1111-000000000005": {
                 "error": {},
-                "grid_x_int": 5,
-                "grid_y_int": 3,
+                "grid_x_int": 7,
+                "grid_y_int": 2,
                 "index": null,
                 "input": {},
                 "output": {},
                 "recommendation_id": null,
-                "rot_int": 0,
+                "rot_int": 90,
                 "rot_tail_int": 0,
                 "source": "snap catagory"
             }
@@ -151,9 +151,172 @@
     },
     "snap_map": {
         "11111111-1111-1111-1111-000000000000": {
+            "class_id": "com-snaplogic-snaps-transform-jsongenerator",
+            "class_version": 2,
+            "instance_id": "11111111-1111-1111-1111-000000000000",
+            "property_map": {
+                "error": {
+                    "error0": {
+                        "label": {
+                            "value": "error0"
+                        },
+                        "view_type": {
+                            "value": "document"
+                        }
+                    },
+                    "error_behavior": {
+                        "value": "fail"
+                    }
+                },
+                "info": {
+                    "label": {
+                        "value": "JSON Generator"
+                    },
+                    "notes": {}
+                },
+                "input": {},
+                "output": {
+                    "output0": {
+                        "label": {
+                            "value": "output0"
+                        },
+                        "view_type": {
+                            "value": "document"
+                        }
+                    }
+                },
+                "settings": {
+                    "arrayElementsAsDocuments": {
+                        "value": true
+                    },
+                    "editable_content": {
+                        "value": "## Enter your JSON-encoded data in this space.  Note that this text is\n## treated as an Apache Velocity template, so you can substitute values\n## from input documents or the pipeline parameters.  See the following\n## URL for more information about Velocity:\n##   https://velocity.apache.org/engine/devel/user-guide.html\n\n[\n  {\n    \"FIRST_NAME\": \"Mia\",\n    \"MIDDLE_NAME\": \"\",\n    \"LAST_NAME\": \"Diaz\",\n    \"DATE_OF_BIRTH\": \"1952-06-20 00:00:00.000\",\n    \"DATE_OF_DEATH\": \"2020-03-15 00:00:00.000\",\n    \"SSN\": \"147-60-5530\",\n    \"GENDER\": \"Female\"\n  },\n  {\n    \"FIRST_NAME\": \"Megan\",\n    \"MIDDLE_NAME\": \"\",\n    \"LAST_NAME\": \"Flynn\",\n    \"DATE_OF_BIRTH\": \"1975-06-21 00:00:00.000\",\n    \"DATE_OF_DEATH\": \"2018-11-02 00:00:00.000\",\n    \"SSN\": \"1\",\n    \"GENDER\": \"Female\"\n  },\n  {\n    \"FIRST_NAME\": \"Jasmine\",\n    \"MIDDLE_NAME\": \"\",\n    \"LAST_NAME\": \"White\",\n    \"DATE_OF_BIRTH\": \"2003-10-31 00:00:00.000\",\n    \"DATE_OF_DEATH\": \"\",\n    \"SSN\": \"456-76-1439\",\n    \"GENDER\": \"Male\"\n  }\n]\n\n\n## Tips:\n##  * The sample data above will generate a single empty document, uncomment\n##    the line in the middle to include the sample fields.  Adding more\n##    objects to the root array will cause the snap to generate more\n##    than one document.\n##  * Pipeline parameters can be referenced by prefixing the parameter\n##    name with an underscore, like so:\n##      ${_pipelineParamName}\n##  * If you add an input view to the snap, this template will be\n##    evaluated for each input document.\n##  * Fields in the input documents can be referenced by prefixing them\n##    with a dollar-sign ($), like so:\n##      $parent.child[0].value\n##  * Any referenced document values and pipeline parameters will\n##    automatically be JSON-encoded when they are inserted into the final\n##    JSON document.  You should not have to worry about escaping values\n##    yourself.\n##  * If you are having troubles getting a template to produce valid JSON,\n##    you can add an error view to the snap to get a document that\n##    contains the output of the template evaluation.\n"
+                    },
+                    "execution_mode": {
+                        "value": "Validate & Execute"
+                    },
+                    "passThroughProp": {
+                        "value": false
+                    },
+                    "supportTypeExts": {
+                        "value": false
+                    }
+                },
+                "view_serial": 100
+            }
+        },
+        "11111111-1111-1111-1111-000000000001": {
+            "class_id": "com-snaplogic-snaps-flow-filter",
+            "class_version": 2,
+            "instance_id": "11111111-1111-1111-1111-000000000001",
+            "property_map": {
+                "error": {
+                    "error0": {
+                        "label": {
+                            "value": "error0"
+                        },
+                        "view_type": {
+                            "value": "document"
+                        }
+                    },
+                    "error_behavior": {
+                        "value": "fail"
+                    }
+                },
+                "info": {
+                    "label": {
+                        "value": "Filter out invalid SSN and DATE_OF_DEATH"
+                    },
+                    "notes": {}
+                },
+                "input": {
+                    "input0": {
+                        "label": {
+                            "value": "input0"
+                        },
+                        "view_type": {
+                            "value": "document"
+                        }
+                    }
+                },
+                "output": {
+                    "output0": {
+                        "label": {
+                            "value": "output0"
+                        },
+                        "view_type": {
+                            "value": "document"
+                        }
+                    }
+                },
+                "settings": {
+                    "execution_mode": {
+                        "value": "Validate & Execute"
+                    },
+                    "filterExpression": {
+                        "expression": true,
+                        "value": "(\n$SSN.match(/^\\d{3}-\\d{2}-\\d{4}$/) != null\n&& $DATE_OF_DEATH.match(/^\\d{4}-\\d{2}-\\d{2}( \\d{2}:\\d{2}:\\d{2}\\.\\d{3})?$/) != null\n) "
+                    },
+                    "nullSafeAccess": {
+                        "value": true
+                    }
+                },
+                "view_serial": 100
+            }
+        },
+        "11111111-1111-1111-1111-000000000002": {
+            "class_id": "com-snaplogic-snaps-test-assertequals",
+            "class_version": 1,
+            "instance_id": "11111111-1111-1111-1111-000000000002",
+            "property_map": {
+                "error": {
+                    "error0": {
+                        "label": {
+                            "value": "error0"
+                        },
+                        "view_type": {
+                            "value": "document"
+                        }
+                    },
+                    "error_behavior": {
+                        "value": "fail"
+                    }
+                },
+                "info": {
+                    "label": {
+                        "value": "Assert Equals"
+                    },
+                    "notes": {}
+                },
+                "input": {
+                    "input0": {
+                        "label": {
+                            "value": "input0"
+                        },
+                        "view_type": {
+                            "value": "document"
+                        }
+                    }
+                },
+                "output": {},
+                "settings": {
+                    "editable_content": {
+                        "value": "## Enter your expected JSON-encoded data in this space.\n## \"[]\" is required, i.e. should be a List of objects.\n\n[\n  {\n    \"FIRST_NAME\": \"Mia\",\n    \"MIDDLE_NAME\": \"\",\n    \"LAST_NAME\": \"Diaz\",\n    \"DATE_OF_BIRTH\": \"1952-06-20 00:00:00.000\",\n    \"DATE_OF_DEATH\": \"2020-03-15 00:00:00.000\",\n    \"SSN\": \"147-60-5530\",\n    \"GENDER\": \"Female\"\n  }\n]\n\n## Tips:\n##  * The sample data above will generate a single empty document, uncomment\n##    the line in the middle to include the sample fields.  Adding more\n##    objects to the root array will cause the snap to generate more\n##    than one document.\n"
+                    },
+                    "evaluateWithInputDocument": {
+                        "value": true
+                    },
+                    "execution_mode": {
+                        "value": "Validate & Execute"
+                    }
+                },
+                "view_serial": 100
+            }
+        },
+        "11111111-1111-1111-1111-000000000003": {
             "class_id": "com-snaplogic-snaps-binary-simpleread",
             "class_version": 1,
-            "instance_id": "11111111-1111-1111-1111-000000000000",
+            "instance_id": "11111111-1111-1111-1111-000000000003",
             "property_map": {
                 "account": {
                     "account_ref": {
@@ -214,7 +377,7 @@
                         "value": true
                     },
                     "execution_mode": {
-                        "value": "Validate & Execute"
+                        "value": "Disabled"
                     },
                     "filePath": {
                         "expression": false,
@@ -238,65 +401,10 @@
                 "view_serial": 100
             }
         },
-        "11111111-1111-1111-1111-000000000001": {
-            "class_id": "com-snaplogic-snaps-transform-jsongenerator",
-            "class_version": 2,
-            "instance_id": "11111111-1111-1111-1111-000000000001",
-            "property_map": {
-                "error": {
-                    "error0": {
-                        "label": {
-                            "value": "error0"
-                        },
-                        "view_type": {
-                            "value": "document"
-                        }
-                    },
-                    "error_behavior": {
-                        "value": "fail"
-                    }
-                },
-                "info": {
-                    "label": {
-                        "value": "JSON Generator"
-                    },
-                    "notes": {}
-                },
-                "input": {},
-                "output": {
-                    "output0": {
-                        "label": {
-                            "value": "output0"
-                        },
-                        "view_type": {
-                            "value": "document"
-                        }
-                    }
-                },
-                "settings": {
-                    "arrayElementsAsDocuments": {
-                        "value": true
-                    },
-                    "editable_content": {
-                        "value": "## Enter your JSON-encoded data in this space.  Note that this text is\n## treated as an Apache Velocity template, so you can substitute values\n## from input documents or the pipeline parameters.  See the following\n## URL for more information about Velocity:\n##   https://velocity.apache.org/engine/devel/user-guide.html\n\n[\n  {\n    \"FIRST_NAME\": \"Mia\",\n    \"MIDDLE_NAME\": \"\",\n    \"LAST_NAME\": \"Diaz\",\n    \"DATE_OF_BIRTH\": \"1952-06-20 00:00:00.000\",\n    \"DATE_OF_DEATH\": \"2020-03-15 00:00:00.000\",\n    \"SSN\": \"147-60-5530\",\n    \"GENDER\": \"Female\"\n  },\n  {\n    \"FIRST_NAME\": \"Megan\",\n    \"MIDDLE_NAME\": \"\",\n    \"LAST_NAME\": \"Flynn\",\n    \"DATE_OF_BIRTH\": \"1975-06-21 00:00:00.000\",\n    \"DATE_OF_DEATH\": \"2018-11-02 00:00:00.000\",\n    \"SSN\": \"1\",\n    \"GENDER\": \"Female\"\n  },\n  {\n    \"FIRST_NAME\": \"Jasmine\",\n    \"MIDDLE_NAME\": \"\",\n    \"LAST_NAME\": \"White\",\n    \"DATE_OF_BIRTH\": \"2003-10-31 00:00:00.000\",\n    \"DATE_OF_DEATH\": \"\",\n    \"SSN\": \"456-76-1439\",\n    \"GENDER\": \"Male\"\n  }\n]\n\n\n## Tips:\n##  * The sample data above will generate a single empty document, uncomment\n##    the line in the middle to include the sample fields.  Adding more\n##    objects to the root array will cause the snap to generate more\n##    than one document.\n##  * Pipeline parameters can be referenced by prefixing the parameter\n##    name with an underscore, like so:\n##      ${_pipelineParamName}\n##  * If you add an input view to the snap, this template will be\n##    evaluated for each input document.\n##  * Fields in the input documents can be referenced by prefixing them\n##    with a dollar-sign ($), like so:\n##      $parent.child[0].value\n##  * Any referenced document values and pipeline parameters will\n##    automatically be JSON-encoded when they are inserted into the final\n##    JSON document.  You should not have to worry about escaping values\n##    yourself.\n##  * If you are having troubles getting a template to produce valid JSON,\n##    you can add an error view to the snap to get a document that\n##    contains the output of the template evaluation.\n"
-                    },
-                    "execution_mode": {
-                        "value": "Disabled"
-                    },
-                    "passThroughProp": {
-                        "value": false
-                    },
-                    "supportTypeExts": {
-                        "value": false
-                    }
-                },
-                "view_serial": 100
-            }
-        },
-        "11111111-1111-1111-1111-000000000002": {
+        "11111111-1111-1111-1111-000000000004": {
             "class_id": "com-snaplogic-snaps-transform-csvparser",
             "class_version": 3,
-            "instance_id": "11111111-1111-1111-1111-000000000002",
+            "instance_id": "11111111-1111-1111-1111-000000000004",
             "property_map": {
                 "error": {
                     "error0": {
@@ -395,7 +503,7 @@
                         "value": "\\"
                     },
                     "execution_mode": {
-                        "value": "Validate & Execute"
+                        "value": "Disabled"
                     },
                     "ignoreEmptyData": {
                         "value": true
@@ -419,69 +527,10 @@
                 "view_serial": 100
             }
         },
-        "11111111-1111-1111-1111-000000000003": {
-            "class_id": "com-snaplogic-snaps-flow-filter",
-            "class_version": 2,
-            "instance_id": "11111111-1111-1111-1111-000000000003",
-            "property_map": {
-                "error": {
-                    "error0": {
-                        "label": {
-                            "value": "error0"
-                        },
-                        "view_type": {
-                            "value": "document"
-                        }
-                    },
-                    "error_behavior": {
-                        "value": "fail"
-                    }
-                },
-                "info": {
-                    "label": {
-                        "value": "Filter out invalid SSN and DATE_OF_DEATH"
-                    },
-                    "notes": {}
-                },
-                "input": {
-                    "input0": {
-                        "label": {
-                            "value": "input0"
-                        },
-                        "view_type": {
-                            "value": "document"
-                        }
-                    }
-                },
-                "output": {
-                    "output0": {
-                        "label": {
-                            "value": "output0"
-                        },
-                        "view_type": {
-                            "value": "document"
-                        }
-                    }
-                },
-                "settings": {
-                    "execution_mode": {
-                        "value": "Validate & Execute"
-                    },
-                    "filterExpression": {
-                        "expression": true,
-                        "value": "(\n$SSN.match(/^\\d{3}-\\d{2}-\\d{4}$/) != null\n&& $DATE_OF_DEATH.match(/^\\d{4}-\\d{2}-\\d{2}( \\d{2}:\\d{2}:\\d{2}\\.\\d{3})?$/) != null\n) "
-                    },
-                    "nullSafeAccess": {
-                        "value": true
-                    }
-                },
-                "view_serial": 100
-            }
-        },
-        "11111111-1111-1111-1111-000000000004": {
+        "11111111-1111-1111-1111-000000000005": {
             "class_id": "com-snaplogic-snaps-oracle-update",
             "class_version": 1,
-            "instance_id": "11111111-1111-1111-1111-000000000004",
+            "instance_id": "11111111-1111-1111-1111-000000000005",
             "property_map": {
                 "account": {
                     "account_ref": {
@@ -536,7 +585,7 @@
                         "value": false
                     },
                     "execution_mode": {
-                        "value": "Execute only"
+                        "value": "Disabled"
                     },
                     "maxRetryProp": {
                         "expression": false,
@@ -560,55 +609,6 @@
                     "updateCondition": {
                         "expression": true,
                         "value": "\"SSN=$SSN\""
-                    }
-                },
-                "view_serial": 100
-            }
-        },
-        "11111111-1111-1111-1111-000000000005": {
-            "class_id": "com-snaplogic-snaps-test-assertequals",
-            "class_version": 1,
-            "instance_id": "11111111-1111-1111-1111-000000000005",
-            "property_map": {
-                "error": {
-                    "error0": {
-                        "label": {
-                            "value": "error0"
-                        },
-                        "view_type": {
-                            "value": "document"
-                        }
-                    },
-                    "error_behavior": {
-                        "value": "fail"
-                    }
-                },
-                "info": {
-                    "label": {
-                        "value": "Assert Equals"
-                    },
-                    "notes": {}
-                },
-                "input": {
-                    "input0": {
-                        "label": {
-                            "value": "input0"
-                        },
-                        "view_type": {
-                            "value": "document"
-                        }
-                    }
-                },
-                "output": {},
-                "settings": {
-                    "editable_content": {
-                        "value": "## Enter your expected JSON-encoded data in this space.\n## \"[]\" is required, i.e. should be a List of objects.\n\n[\n  {\n    \"FIRST_NAME\": \"Mia\",\n    \"MIDDLE_NAME\": \"\",\n    \"LAST_NAME\": \"Diaz\",\n    \"DATE_OF_BIRTH\": \"1952-06-20 00:00:00.000\",\n    \"DATE_OF_DEATH\": \"2020-03-15 00:00:00.000\",\n    \"SSN\": \"147-60-5530\",\n    \"GENDER\": \"Female\"\n  }\n]\n\n## Tips:\n##  * The sample data above will generate a single empty document, uncomment\n##    the line in the middle to include the sample fields.  Adding more\n##    objects to the root array will cause the snap to generate more\n##    than one document.\n"
-                    },
-                    "evaluateWithInputDocument": {
-                        "value": true
-                    },
-                    "execution_mode": {
-                        "value": "Disabled"
                     }
                 },
                 "view_serial": 100
